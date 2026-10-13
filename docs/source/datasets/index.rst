@@ -54,6 +54,7 @@ Available Datasets
    dtd
    fashion_mnist
    k_mnist
+   k_mnist49
    medmnist
    awa2
    beans
@@ -65,6 +66,7 @@ Available Datasets
    flowers102
    food101
    cub200
+   stanford_dogs
    country211
    galaxy10
    hasy_v2
