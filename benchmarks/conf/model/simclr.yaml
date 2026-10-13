@@ -103,6 +103,9 @@ params:
   hasyv2:
     batch_size: 256
     max_epochs: 150
+  kmnist49:
+    batch_size: 256
+    max_epochs: 150
   # Medium-hard — ×4
   awa2:
     batch_size: 256
@@ -153,10 +156,6 @@ params:
   stanforddogs:
     batch_size: 256
     max_epochs: 300
-  # Medium-simple — ×3
-  kmnist49:
-    batch_size: 256
-    max_epochs: 150
 
 vit_optimizer:
   type: AdamW
