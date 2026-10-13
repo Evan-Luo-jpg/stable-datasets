@@ -119,7 +119,11 @@ class StanfordDogs(BaseDatasetBuilder):
 
 
 def _to_rgb_bytes(image_bytes):
-    """Return the JPEG bytes unchanged if RGB, else re-encode as RGB (a few images are CMYK/grayscale/RGBA)."""
+    """Return the image bytes unchanged if RGB, else re-encode as RGB JPEG.
+
+    The source archive has one non-RGB image (an RGBA file, n02105855_2933.jpg); left as is,
+    its 4 channels would break batching with the 3-channel images.
+    """
     with PILImage.open(io.BytesIO(image_bytes)) as img:
         if img.mode == "RGB":
             return image_bytes

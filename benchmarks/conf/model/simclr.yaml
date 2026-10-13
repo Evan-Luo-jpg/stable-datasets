@@ -150,6 +150,13 @@ params:
   fgvcaircraft_manufacturer:
     batch_size: 256
     max_epochs: 300
+  stanforddogs:
+    batch_size: 256
+    max_epochs: 300
+  # Medium-simple — ×3
+  kmnist49:
+    batch_size: 256
+    max_epochs: 150
 
 vit_optimizer:
   type: AdamW
