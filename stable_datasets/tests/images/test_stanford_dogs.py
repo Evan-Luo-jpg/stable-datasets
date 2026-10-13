@@ -11,21 +11,22 @@ from stable_datasets.images.stanford_dogs import _to_rgb_bytes
 NUM_CLASSES = 120
 
 
-def _jpeg_bytes(mode):
+def _image_bytes(mode, fmt="JPEG"):
     buf = io.BytesIO()
-    Image.new(mode, (8, 8)).save(buf, format="JPEG")
+    Image.new(mode, (8, 8)).save(buf, format=fmt)
     return buf.getvalue()
 
 
 def test_to_rgb_bytes_keeps_rgb_unchanged():
-    rgb = _jpeg_bytes("RGB")
+    rgb = _image_bytes("RGB")
     assert _to_rgb_bytes(rgb) is rgb
 
 
-@pytest.mark.parametrize("mode", ["L", "CMYK"])
-def test_to_rgb_bytes_converts_non_rgb(mode):
-    converted = Image.open(io.BytesIO(_to_rgb_bytes(_jpeg_bytes(mode))))
-    assert converted.mode == "RGB", f"Expected RGB after conversion from {mode}, got {converted.mode}."
+# RGBA/PNG is the real case: the archive's one non-RGB file is an RGBA PNG named .jpg.
+@pytest.mark.parametrize(("mode", "fmt"), [("L", "JPEG"), ("CMYK", "JPEG"), ("RGBA", "PNG")])
+def test_to_rgb_bytes_converts_non_rgb(mode, fmt):
+    converted = Image.open(io.BytesIO(_to_rgb_bytes(_image_bytes(mode, fmt))))
+    assert converted.mode == "RGB", f"Expected RGB after conversion from {mode} {fmt}, got {converted.mode}."
 
 
 @pytest.mark.large
