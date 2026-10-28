@@ -51,7 +51,9 @@ Available Datasets
    cifar10_c
    cifar100_c
    cars196
+   coil100
    dtd
+   not_mnist
    fashion_mnist
    k_mnist
    k_mnist49
@@ -72,6 +74,7 @@ Available Datasets
    hasy_v2
    face_pointing
    rock_paper_scissor
+   svhn
    linnaeus5
 
 .. toctree::
@@ -79,6 +82,19 @@ Available Datasets
    :caption: Video Datasets
 
    something_something_v2
+   clevrer
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Disentanglement Datasets
+
+   dsprites
+   dsprites_color
+   dsprites_noise
+   dsprites_scream
+   shapes3d
+   cars3d
+   small_norb
 
 .. note::
    Documentation is being added progressively, as datasets are ready for usage. Please only use datasets found in the documentation.
