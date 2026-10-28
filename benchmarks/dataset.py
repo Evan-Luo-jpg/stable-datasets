@@ -169,7 +169,6 @@ DATASET_CONFIGS: dict[str, DatasetConfig] = {
         std=[0.2731, 0.2659, 0.2797],
     ),
     "imagenet100": _rgb("imagenet100", "ImageNet-100", 100, builder_name="ImageNet100"),
-    "stanforddogs": _rgb("stanforddogs", "Stanford Dogs", 120),
     # Grayscale datasets (1-channel) — includes character/line-art datasets
     # whose images are visually binary (ink-on-paper) regardless of source channel count.
     "arabiccharacters": _gray("arabiccharacters", "Arabic Characters", 28, mean=[0.1030], std=[0.3040]),
@@ -223,7 +222,6 @@ DATASET_CONFIGS: dict[str, DatasetConfig] = {
     ),
     "fashionmnist": _gray("fashionmnist", "FashionMNIST", 10, mean=[0.2860], std=[0.3530]),
     "kmnist": _gray("kmnist", "KMNIST", 10, mean=[0.1918], std=[0.3483]),
-    "kmnist49": _gray("kmnist49", "Kuzushiji-49", 49, mean=[0.1801], std=[0.3421]),
     "pneumoniamnist": _gray(
         "pneumoniamnist",
         "PneumoniaMNIST",
