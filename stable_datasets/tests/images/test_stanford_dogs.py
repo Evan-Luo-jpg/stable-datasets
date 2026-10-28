@@ -29,7 +29,6 @@ def test_to_rgb_bytes_converts_non_rgb(mode, fmt):
     assert converted.mode == "RGB", f"Expected RGB after conversion from {mode} {fmt}, got {converted.mode}."
 
 
-@pytest.mark.large
 def test_stanford_dogs_dataset():
     # StanfordDogs(split="train") automatically downloads and loads the dataset
     dogs_train = StanfordDogs(split="train")
@@ -69,14 +68,19 @@ def test_stanford_dogs_dataset():
         f"Unexpected class name order: {names[0]}, {names[-1]}"
     )
 
-    # Test 7: Check the test split
+    # Test 7: Check the test split and that it covers every class
     dogs_test = StanfordDogs(split="test")
     expected_num_test_samples = 8580
     assert len(dogs_test) == expected_num_test_samples, (
         f"Expected {expected_num_test_samples} test samples, got {len(dogs_test)}."
     )
+    test_classes = set(dogs_test.table.column("label").to_pylist())
+    assert test_classes == set(range(NUM_CLASSES)), f"Expected all {NUM_CLASSES} classes, got {len(test_classes)}."
 
-    # Test 8: Every image is decoded as 3-channel RGB (some source JPEGs are not RGB)
+    # Test 8: Every stored image is RGB (the archive has one RGBA PNG). Reads only each image
+    # header from the raw bytes, chunk by chunk, so it stays fast and light on memory.
     for ds in (dogs_train, dogs_test):
-        for i in range(len(ds)):
-            assert ds[i]["image"].mode == "RGB", f"Image {i} has mode {ds[i]['image'].mode}, expected RGB."
+        for chunk in ds.table.column("image").chunks:
+            for value in chunk:
+                mode = Image.open(io.BytesIO(value.as_py())).mode
+                assert mode == "RGB", f"Found an image with mode {mode}, expected RGB."
