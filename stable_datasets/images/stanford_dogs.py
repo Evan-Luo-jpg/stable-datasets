@@ -41,6 +41,22 @@ _STANFORD_DOGS_CLASS_NAMES = [
     "standard_poodle", "Mexican_hairless", "dingo", "dhole", "African_hunting_dog",
 ]  # fmt: skip
 
+# Stanford URLs first. The fallbacks are Internet Archive (Wayback Machine) captures served raw
+# (`id_`); their content digests match the original files, and the checksums make any copy that
+# differs fail the download.
+_STANFORD_URL = "http://vision.stanford.edu/aditya86/ImageNetDogs"
+_WAYBACK_URL = "https://web.archive.org/web/{timestamp}id_/" + _STANFORD_URL
+_IMAGES_DOWNLOAD = DownloadInfo(
+    url=f"{_STANFORD_URL}/images.tar",
+    fallbacks=[_WAYBACK_URL.format(timestamp="20250724000413") + "/images.tar"],
+    checksum="sha256:a443fc2f9a851aa1a7b8e4fa4af94b8459fce2c9f5a2f4dd4669cf9673a4ec58",
+)
+_LISTS_DOWNLOAD = DownloadInfo(
+    url=f"{_STANFORD_URL}/lists.tar",
+    fallbacks=[_WAYBACK_URL.format(timestamp="20241221112710") + "/lists.tar"],
+    checksum="sha256:34b47cacd9a98b5d150e084f24d29391c084c55272295ec65c85651bc35f4d6c",
+)
+
 
 class StanfordDogs(BaseDatasetBuilder):
     """Fine-grained image classification.
@@ -56,10 +72,7 @@ class StanfordDogs(BaseDatasetBuilder):
     # train/test membership comes from the separate list archive.
     SOURCE = DatasetSource(
         homepage="http://vision.stanford.edu/aditya86/ImageNetDogs/",
-        assets={
-            "train": DownloadInfo(url="http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar"),
-            "test": DownloadInfo(url="http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar"),
-        },
+        assets={"train": _IMAGES_DOWNLOAD, "test": _IMAGES_DOWNLOAD},
         citation="""@inproceedings{khosla2011novel,
                          author    = {Aditya Khosla and Nityananda Jayadevaprakash and Bangpeng Yao and Li Fei-Fei},
                          title     = {Novel Dataset for Fine-Grained Image Categorization},
@@ -69,7 +82,7 @@ class StanfordDogs(BaseDatasetBuilder):
                          address   = {Colorado Springs, CO}}""",
     )
 
-    LISTS_URL = "http://vision.stanford.edu/aditya86/ImageNetDogs/lists.tar"
+    LISTS_DOWNLOAD = _LISTS_DOWNLOAD
 
     def _info(self):
         return DatasetInfo(
@@ -92,7 +105,7 @@ class StanfordDogs(BaseDatasetBuilder):
         download_dir = getattr(self, "_raw_download_dir", None)
         if download_dir is None:
             download_dir = _default_dest_folder()
-        lists_path = bulk_download([self.LISTS_URL], dest_folder=download_dir)[0]
+        lists_path = bulk_download([self.LISTS_DOWNLOAD], dest_folder=download_dir)[0]
 
         with tarfile.open(lists_path, "r") as archive:
             mat = loadmat(io.BytesIO(archive.extractfile(f"{split}_list.mat").read()))
