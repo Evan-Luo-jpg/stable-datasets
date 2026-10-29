@@ -46,11 +46,14 @@ Available Datasets
 
    arabic_characters
    arabic_digits
+   caltech256
    cifar10
    cifar100
    cifar10_c
    cifar100_c
+   cinic10
    cars196
+   cct20
    coil100
    dtd
    not_mnist
@@ -58,15 +61,23 @@ Available Datasets
    k_mnist
    k_mnist49
    medmnist
+   patch_camelyon
    awa2
    beans
+   deep_weeds
    stl10
    tiny_imagenet
    tiny_imagenet_c
+   imagenet_a
+   imagenet_r
    e_mnist
    fgvc_aircraft
+   flowers17
    flowers102
+   tf_flowers
+   imagewoof
    food101
+   fmd
    cub200
    stanford_dogs
    country211
@@ -76,6 +87,13 @@ Available Datasets
    rock_paper_scissor
    svhn
    linnaeus5
+   malaria
+   kather_colorectal_histology
+   sun397
+   stanford40
+   usps
+   oxford_iiit_pet
+   eurosat
 
 .. toctree::
    :maxdepth: 1
